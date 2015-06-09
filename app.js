@@ -14,6 +14,16 @@ app.get('/', function(req, res) {
     });
 });
 
-app.listen(app.get('port'), function () {
+var server = app.listen(app.get('port'), function () {
     console.log('Node app is running on port: ' + app.get('port'));
+});
+
+var io = require('socket.io')(server);
+
+io.on('connection', function(socket) {
+    console.log('connected!');
+    socket.on('chat message', function(msg) {
+        console.log('message' + msg);
+        io.emit('chat message', msg);
+    });
 });

@@ -8,16 +8,29 @@
     <!-- load bootstrap and our own personal stylesheet -->
     <link href="//maxcdn.bootstrapcdn.com/bootswatch/3.2.0/superhero/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
-
+    <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+    <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        var socket = io();
+        function chat() {
+            socket.emit('chat message', $('#m').val());
+            $('#m').val('');
+            return false;
+        }
+        socket.on('chat message', function(msg) {
+            $('#messages').append($('<li>').text(msg));
+        });
+    </script>
 </head>
 <body>
 
 <div class="container">
-    <div class="jumbotron">
-        <h1>This Is Heroku Awesome!</h1>
-        <p>This is the sample of a tutorial on <a href="https://scotch.io">scotch.io</a></p>
-        <a href="https://scotch.io/tutorials/" class="btn btn-primary btn-lg">View the Tutorial</a>
-    </div>
+    <h1>Chat!</h1>
+    <ul id="messages"></ul>
+    <form onsubmit="return false" onclick="chat()" action="">
+      <input id="m" autocomplete="off" /><button>Send</button>
+    </form>   
 </div>
     
 </body>
