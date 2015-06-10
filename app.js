@@ -19,7 +19,7 @@ var server = app.listen(app.get('port'), function () {
 });
 
 var io = require('socket.io')(server);
-
+console.log(io);
 io.on('connection', function(socket) {
     console.log('connected!');
     socket.on('chat message', function(msg) {
