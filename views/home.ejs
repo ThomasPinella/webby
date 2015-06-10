@@ -14,8 +14,8 @@
     <script>
         var socket = io();
         function chat() {
+alert(socket);
             socket.emit('chat message', $('#m').val());
-alert($('#m').val());
             $('#m').val('');
             return false;
         }
