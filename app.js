@@ -9,19 +9,19 @@ app.set('view engine', 'ejs');
 app.use(express.static(__dirname + '/public'));
 
 app.get('/', function(req, res) {
-    res.render('home', {
-    title: 'Welcome'
+	res.render('home', {
+	title: 'Welcome'
     });
 });
 
 var server = app.listen(app.get('port'), function () {
-    console.log('Node app is running on port: ' + app.get('port'));
+	console.log('Node app is running on port: ' + app.get('port'));
 });
 
-var io = require('socket.io')(server);
+var io = require('socket.io').listen(server);
 
 io.on('connection', function(socket) {
-    console.log('connected!');
+	console.log('connected!');
     socket.on('chat message', function(msg) {
         console.log('message' + msg);
         io.emit('chat message', msg);
