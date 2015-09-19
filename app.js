@@ -26,4 +26,7 @@ io.on('connection', function(socket) {
         console.log('message' + msg);
         io.emit('chat message', msg);
     });
+	socket.on('sound', function(snd) {
+		io.emit('sound', snd);
+	});
 });
