@@ -10,26 +10,29 @@
     <link rel="stylesheet" href="css/style.css">
     <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
     <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-	<audio id="sound_id">
-		<source src="something.mp3">
-	</audio>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.4.12/p5.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.4.12/addons/p5.sound.min.js"></script>
     <script src="/socket.io/socket.io.js"></script>
     <script>
         var socket = io();
         function chat() {
-		console.log(socket);
+            console.log(socket);
             socket.emit('chat message', $('#m').val());
-			socket.emit('sound', document.getElementById('something'));
-            $('#m').val('');
+	          socket.emit('freq', Number($('#m').val()));
+            //$('#m').val('');
             return false;
         }
         socket.on('chat message', function(msg) {
             $('#messages').append($('<li>').text(msg));
         });
-		socket.on('sound', function(snd) {
-			snd.play();
-		});
+	      socket.on('freq', function(freq) {
+          var osc = new p5.Oscillator();
+          osc.setType('sine'); //this can be altered as well to make it more interesting
+          osc.freq(freq);
+          osc.amp(0.5, 0.05);
+          osc.start();
+        });
     </script>
 </head>
 <body>
@@ -38,9 +41,9 @@
     <h1>Chat!</h1>
     <ul id="messages"></ul>
     <form onsubmit="return false" onclick="chat()" action="">
-      <input id="m" autocomplete="off" /><button>Send</button>
-    </form>   
+      <input id="m" value="440" autocomplete="off" /><button>Send</button>
+    </form>
 </div>
-    
+
 </body>
 </html>

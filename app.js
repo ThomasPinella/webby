@@ -14,19 +14,21 @@ app.get('/', function(req, res) {
     });
 });
 
-var server = app.listen(app.get('port'), function () {
+var server = app.listen(app.get('port'), function() {
 	console.log('Node app is running on port: ' + app.get('port'));
 });
 
 var io = require('socket.io').listen(server);
 
+var count = 0;
 io.on('connection', function(socket) {
 	console.log('connected!');
+	count++;
     socket.on('chat message', function(msg) {
         console.log('message' + msg);
         io.emit('chat message', msg);
     });
-	socket.on('sound', function(snd) {
-		io.emit('sound', snd);
+	socket.on('freq', function(freq) {
+		io.emit('freq', freq);
 	});
 });
