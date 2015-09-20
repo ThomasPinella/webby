@@ -16,7 +16,7 @@
     <script src="/socket.io/socket.io.js"></script>
     <script>
         var socket = io();
-        var freq = Math.floor(Math.random() * 2000) + 150;
+        var freq = 262;
         var oscs = [];
 
         function isNewNote(f) {
@@ -36,8 +36,8 @@
                 osc.amp(0.5, 0.05);
                 osc.start();
                 var oscData = {
-                    oscillator:osc,
-                    frequency:f
+                    oscillator: osc,
+                    frequency: f
                 };
                 oscs.push(oscData);
             }
@@ -63,14 +63,21 @@
             socket.emit('end', freq);
         }
 
+        $(function() {
+            $.get('/frequency', function(data) {
+                freq = data;
+            });
+        });
+        /*
         setInterval(function() {
-            document.getElementById('update').innerHTML = "Length: " + oscs.length + ". Array: " + oscs.toString();
+            freq = document.getElementById('update').innerHTML;
         }, 500);
+        */
     </script>
 </head>
 <body onkeydown="playNote()" onkeyup="endNote()">
     <div id="update">
-      Wait for it...
+        0
     </div>
 </body>
 </html>
