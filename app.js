@@ -4,6 +4,7 @@ var app = express();
 
 var clients = [];
 var notes = [524, 493, 294, 440, 349, 330, 392, 262]; //262 294 330 349 392 440 493 523
+//var notes = [1, 3, 5, 6, 8];
 
 app.set('port', (process.env.PORT || 5000));
 app.set('views', './views');
@@ -12,15 +13,12 @@ app.set('view engine', 'ejs');
 app.use(express.static(__dirname + '/public'));
 
 app.get('/', function(req, res) {
-	res.render('home', {
-	title: 'Welcome'
-    });
+	res.render('home');
 });
 
 app.get('/frequency', function(req, res) {
 	var n = notes.pop();
-	console.log("Server-side: " + n);
-	res.sendStatus(n);
+	res.json(n);
 });
 
 var server = app.listen(app.get('port'), function() {

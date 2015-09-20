@@ -18,7 +18,8 @@
         var socket = io();
         var freq = 100;
         var oscs = [];
-
+        var randNum = Math.floor(Math.random() * 2000)+ 150;
+        console.log(randNum);
         function isNewNote(f) {
             for (var i = 0; i < oscs.length; i++) {
                 if (oscs[i].frequency == f) {
@@ -63,19 +64,20 @@
             socket.emit('end', freq);
         }
 
-        $.get('/frequency', function(data) {
-            freq = Number(data);
-            console.log("FREQUENCY: " + freq);
-            document.getElementById('update').innerHTML = freq;
-        });
-        /*
-        setInterval(function() {
-            freq = document.getElementById('update').innerHTML;
-        }, 500);
-        */
+        function ajaxIt() {
+            $.get('/frequency', {item:randNum}, function(data, status, xhr) {
+                console.log("Status: " + status);
+                console.log("xhr:" + xhr);
+                alert(data);
+                freq = Number(data);
+                console.log("FREQUENCY: " + freq);
+                document.getElementById('update').innerHTML = freq;
+            });
+        }
+
     </script>
 </head>
-<body onkeydown="playNote()" onkeyup="endNote()">
+<body onload="ajaxIt()" onkeydown="playNote()" onkeyup="endNote()">
     <div id="update">
         0
     </div>
