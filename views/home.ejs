@@ -30,13 +30,42 @@
 
 	      socket.on('play', function(f) {
             if (isNewNote(f)) {
+                var sine = new p5.Oscillator();
+                var sine2 = new p5.Oscillator();
+                var trin = new p5.Oscillator();
+
+                sine.setType('sine');
+                sine2.setType('sine');
+                trin.setType('triangle');
+                sine.freq(1 * f);
+                sine.freq(0.67 * f);
+                trin.freq(0.5 * f);
+                sine.amp(.5, 0.005);
+                sine2.amp(0, 0.005);
+                trin.amp(.5, 0.005);
+                sine.start();
+                sine2.start();
+                trin.start();
+
+                var so = {
+                    os1: sine,
+                    os2: sine2,
+                    os3: trin
+                };
+                /*
                 var osc = new p5.Oscillator();
                 osc.setType('sine'); //this can be altered as well to make it more interesting
                 osc.freq(f);
                 osc.amp(0.5, 0.05);
-                osc.start();
+                osc.start()
+
                 var oscData = {
                     oscillator: osc,
+                    frequency: f
+                };
+                */
+                var oscData = {
+                    oscillator: so,
                     frequency: f
                 };
                 oscs.push(oscData);
@@ -46,7 +75,9 @@
         socket.on('end', function(f) {
             for (var i = 0; i < oscs.length; i++) {
                 if (oscs[i].frequency == f) {
-                    oscs[i].oscillator.stop();
+                    oscs[i].oscillator.os1.stop();
+                    oscs[i].oscillator.os2.stop();
+                    oscs[i].oscillator.os3.stop();
                     oscs.splice(i, 1);
                     return;
                 }
@@ -78,12 +109,28 @@
         });
 
         var img = new Image();
-        img.src = 'images/Acap.png';
+        //img.src = 'images/Acap.png';
+        if (freq == 262) {
+            img.src = 'images/Ccap.png';
+        } else if (freq == 294) {
+          img.src = 'images/Dcap.png';
+        } else if (freq == 330) {
+          img.src = 'images/Ecap.png';
+        } else if (freq == 349) {
+          img.src = 'images/Fcap.png';
+        } else if (freq == 392) {
+          img.src = 'images/Gcap.png';
+        } else if (freq == 440) {
+          img.src = 'images/Acap.png';
+        } else if (freq == 493) {
+          img.src = 'images/Bcap.png';
+        } else {
+          img.src = 'images/Ccap.png';
+        }
         img.width = 100
         img.onload = function() {
             document.getElementById('but').appendChild(img);
         };
-
 
     </script>
 </head>
