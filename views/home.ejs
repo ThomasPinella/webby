@@ -54,15 +54,23 @@
         });
 
         function playNote() {
+            console.log("PLAYING: " + freq);
             socket.emit('play', freq);
         }
 
         function endNote() {
+            console.log("ENDING: " + freq);
             socket.emit('end', freq);
         }
+
+        setInterval(function() {
+            document.getElementById('update').innerHTML = "Length: " + oscs.length + ". Array: " + oscs.toString();
+        }, 500);
     </script>
 </head>
 <body onkeydown="playNote()" onkeyup="endNote()">
-
+    <div id="update">
+      Wait for it...
+    </div>
 </body>
 </html>
