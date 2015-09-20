@@ -19,17 +19,28 @@
         var freq = Math.floor(Math.random() * 2000) + 150;
         var oscs = [];
 
+        function isNewNote(f) {
+            for (var i = 0; i < oscs.length; i++) {
+                if (oscs[i].frequency == f) {
+                    return false;
+                }
+            }
+            return true;
+        }
+
 	      socket.on('play', function(f) {
-            var osc = new p5.Oscillator();
-            osc.setType('sine'); //this can be altered as well to make it more interesting
-            osc.freq(f);
-            osc.amp(0.5, 0.05);
-            osc.start();
-            var oscData = {
-                oscillator:osc,
-                frequency:f
-            };
-            oscs.push(oscData);
+            if (isNewNote(f)) {
+                var osc = new p5.Oscillator();
+                osc.setType('sine'); //this can be altered as well to make it more interesting
+                osc.freq(f);
+                osc.amp(0.5, 0.05);
+                osc.start();
+                var oscData = {
+                    oscillator:osc,
+                    frequency:f
+                };
+                oscs.push(oscData);
+            }
         });
 
         socket.on('end', function(f) {
