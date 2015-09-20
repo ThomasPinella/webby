@@ -63,14 +63,11 @@
             socket.emit('end', freq);
         }
 
-        //$(function() {
-            $.get('/frequency', function(data) {
-                //var $response = Number($('#update').html(data));
-                freq = Number(data);
-                console.log("FREQUENCY: " + freq;
-                document.getElementById('update').innerHTML = freq;
-            });
-        //});
+        $.get('/frequency', function(data) {
+            freq = Number(data);
+            console.log("FREQUENCY: " + freq);
+            document.getElementById('update').innerHTML = freq;
+        });
         /*
         setInterval(function() {
             freq = document.getElementById('update').innerHTML;
