@@ -50,11 +50,6 @@ io.on('connection', function(socket) {
 		clients.splice(clients.indexOf(client), 1);
 		notes.push(lost);
 		console.log('disconnected! ' + lost);
-		
-		//Doesn't work
-		app.get('/minusone', function(req, res) {
-			res.json(clients.length);
-		});
 	});
 });
 
