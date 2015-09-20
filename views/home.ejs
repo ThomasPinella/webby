@@ -16,34 +16,42 @@
     <script src="/socket.io/socket.io.js"></script>
     <script>
         var socket = io();
-        function chat() {
-            console.log(socket);
-            socket.emit('chat message', $('#m').val());
-	          socket.emit('freq', Number($('#m').val()));
-            //$('#m').val('');
-            return false;
+        var freq = Math.floor(Math.random() * 2000) + 150;
+        var oscs = [];
+
+	      socket.on('play', function(f) {
+            var osc = new p5.Oscillator();
+            osc.setType('sine'); //this can be altered as well to make it more interesting
+            osc.freq(f);
+            osc.amp(0.5, 0.05);
+            osc.start();
+            var oscData = {
+                oscillator:osc,
+                frequency:f
+            };
+            oscs.push(oscData);
+        });
+
+        socket.on('end', function(f) {
+            for (var i = 0; i < oscs.length; i++) {
+                if (oscs[i].frequency == f) {
+                    oscs[i].oscillator.stop();
+                    oscs.splice(i, 1);
+                    return;
+                }
+            }
+        });
+
+        function playNote() {
+            socket.emit('play', freq);
         }
-        socket.on('chat message', function(msg) {
-            $('#messages').append($('<li>').text(msg));
-        });
-	      socket.on('freq', function(freq) {
-          var osc = new p5.Oscillator();
-          osc.setType('sine'); //this can be altered as well to make it more interesting
-          osc.freq(freq);
-          osc.amp(0.5, 0.05);
-          osc.start();
-        });
+
+        function endNote() {
+            socket.emit('end', freq);
+        }
     </script>
 </head>
-<body>
-
-<div class="container">
-    <h1>Chat!</h1>
-    <ul id="messages"></ul>
-    <form onsubmit="return false" onclick="chat()" action="">
-      <input id="m" value="440" autocomplete="off" /><button>Send</button>
-    </form>
-</div>
+<body onkeydown="playNote()" onkeyup="endNote()">
 
 </body>
 </html>

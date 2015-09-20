@@ -24,11 +24,10 @@ var count = 0;
 io.on('connection', function(socket) {
 	console.log('connected!');
 	count++;
-    socket.on('chat message', function(msg) {
-        console.log('message' + msg);
-        io.emit('chat message', msg);
+    socket.on('play', function(f) {
+        io.emit('play', f);
     });
-	socket.on('freq', function(freq) {
-		io.emit('freq', freq);
+	socket.on('end', function(f) {
+		io.emit('end', f);
 	});
 });
