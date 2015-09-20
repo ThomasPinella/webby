@@ -100,42 +100,72 @@
                 freq = Number(data.freq);
                 numPeople = Number(data.numTotal);
                 document.getElementById('numPeople').innerHTML = numPeople + '&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;8';
+                setImage();
             });
         }
 
+        function componentToHex(c) {
+            var hex = c.toString(16);
+            return hex.length == 1 ? "0" + hex : hex;
+        }
 
+        function rgbToHex(r, g, b) {
+            return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
+        }
+
+        /*
+        setInterval(function() {
+            var avg = 0;
+            for (var i = 0; i < oscs.length; i++) {
+                avg += oscs.frequency;
+            }
+            avg = avg / oscs.length;
+            if (avg != 0) {
+                part1 = avg / 523 * 255;
+                part2 = avg / 523 * 255;
+                part3 = avg / 523 * 255;
+                currentColor = "rgb (" + part1 + ", " + part2 + ", " + part3 + ")";
+                console.log(currentColor);
+                document.getElementById('content').style.backgroundColor = currentColor;
+            }
+        }, 250);
+        */
+        /*
         $.get('/minusone', {}, function(data) {
             numPeople = Number(data);
         });
+        */
 
-        var img = new Image();
-        //img.src = 'images/Acap.png';
-        if (freq == 262) {
-            img.src = 'images/Ccap.png';
-        } else if (freq == 294) {
-          img.src = 'images/Dcap.png';
-        } else if (freq == 330) {
-          img.src = 'images/Ecap.png';
-        } else if (freq == 349) {
-          img.src = 'images/Fcap.png';
-        } else if (freq == 392) {
-          img.src = 'images/Gcap.png';
-        } else if (freq == 440) {
-          img.src = 'images/Acap.png';
-        } else if (freq == 493) {
-          img.src = 'images/Bcap.png';
-        } else {
-          img.src = 'images/Ccap.png';
+        function setImage() {
+            var img = new Image();
+            //img.src = 'images/Acap.png';
+            if (freq == 262) {
+                img.src = 'images/Ccap.png';
+            } else if (freq == 294) {
+              img.src = 'images/Dcap.png';
+            } else if (freq == 330) {
+              img.src = 'images/Ecap.png';
+            } else if (freq == 349) {
+              img.src = 'images/Fcap.png';
+            } else if (freq == 392) {
+              img.src = 'images/Gcap.png';
+            } else if (freq == 440) {
+              img.src = 'images/Acap.png';
+            } else if (freq == 493) {
+              img.src = 'images/Bcap.png';
+            } else {
+              img.src = 'images/Ccap.png';
+            }
+            img.width = 100
+            img.onload = function() {
+                document.getElementById('but').appendChild(img);
+            };
         }
-        img.width = 100
-        img.onload = function() {
-            document.getElementById('but').appendChild(img);
-        };
 
     </script>
 </head>
 <body onload="ajaxIt()" onkeydown="playNote()" onkeyup="endNote()">
-    <div id="content">
+    <div style="height:100%;width:100%;" id="content">
       <center><span id="numPeople" style="display:block;margin-top:2%;font-family:Sans-Serif;font-size:200%;color:white;">0 / 0</span></center>
       <center><a style="display:block;margin-top:35%;"id="but" onmousedown="playNote()" onmouseup="endNote()"></a></center>
     </div>
