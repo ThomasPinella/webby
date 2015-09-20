@@ -2,11 +2,11 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>WhistleCaps</title>
+    <title>CapTone</title>
 
     <!-- CSS -->
     <!-- load bootstrap and our own personal stylesheet -->
-    <link href="//maxcdn.bootstrapcdn.com/bootswatch/3.2.0/superhero/bootstrap.min.css" rel="stylesheet">
+    <!--<link href="//maxcdn.bootstrapcdn.com/bootswatch/3.2.0/superhero/bootstrap.min.css" rel="stylesheet">-->
     <link rel="stylesheet" href="css/style.css">
     <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
     <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
@@ -18,8 +18,7 @@
         var socket = io();
         var freq = 100;
         var oscs = [];
-        var randNum = Math.floor(Math.random() * 2000)+ 150;
-        console.log(randNum);
+        var numPeople = 1;
         function isNewNote(f) {
             for (var i = 0; i < oscs.length; i++) {
                 if (oscs[i].frequency == f) {
@@ -65,21 +64,33 @@
         }
 
         function ajaxIt() {
-            $.get('/frequency', {item:randNum}, function(data, status, xhr) {
-                console.log("Status: " + status);
-                console.log("xhr:" + xhr);
-                alert(data);
-                freq = Number(data);
-                console.log("FREQUENCY: " + freq);
-                document.getElementById('update').innerHTML = freq;
+            $.get('/frequency', {}, function(data) {
+                var stuff = JSON.stringify(data);
+                freq = Number(data.freq);
+                numPeople = Number(data.numTotal);
+                document.getElementById('numPeople').innerHTML = numPeople + '&nbsp;&nbsp;&nbsp;/&nbsp;&nbsp;&nbsp;8';
             });
         }
+
+
+        $.get('/minusone', {}, function(data) {
+            numPeople = Number(data);
+        });
+
+        var img = new Image();
+        img.src = 'images/Acap.png';
+        img.width = 100
+        img.onload = function() {
+            document.getElementById('but').appendChild(img);
+        };
+
 
     </script>
 </head>
 <body onload="ajaxIt()" onkeydown="playNote()" onkeyup="endNote()">
-    <div id="update">
-        0
+    <div id="content">
+      <center><span id="numPeople" style="display:block;margin-top:2%;font-family:Sans-Serif;font-size:200%;color:white;">0 / 0</span></center>
+      <center><a style="display:block;margin-top:35%;"id="but" onmousedown="playNote()" onmouseup="endNote()"></a></center>
     </div>
 </body>
 </html>

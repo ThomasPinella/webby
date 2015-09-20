@@ -4,7 +4,6 @@ var app = express();
 
 var clients = [];
 var notes = [524, 493, 294, 440, 349, 330, 392, 262]; //262 294 330 349 392 440 493 523
-//var notes = [1, 3, 5, 6, 8];
 
 app.set('port', (process.env.PORT || 5000));
 app.set('views', './views');
@@ -18,7 +17,11 @@ app.get('/', function(req, res) {
 
 app.get('/frequency', function(req, res) {
 	var n = notes.pop();
-	res.json(n);
+	var data = {
+		freq: n,
+		numTotal: clients.length
+	};
+	res.json(data);
 });
 
 var server = app.listen(app.get('port'), function() {
@@ -47,11 +50,13 @@ io.on('connection', function(socket) {
 		clients.splice(clients.indexOf(client), 1);
 		notes.push(lost);
 		console.log('disconnected! ' + lost);
+		
+		//Doesn't work
+		app.get('/minusone', function(req, res) {
+			res.json(clients.length);
+		});
 	});
 });
-
-
-
 
 
 
