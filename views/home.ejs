@@ -16,7 +16,7 @@
     <script src="/socket.io/socket.io.js"></script>
     <script>
         var socket = io();
-        var freq = 262;
+        var freq = 100;
         var oscs = [];
 
         function isNewNote(f) {
@@ -63,11 +63,14 @@
             socket.emit('end', freq);
         }
 
-        $(function() {
+        //$(function() {
             $.get('/frequency', function(data) {
+                //var $response = Number($('#update').html(data));
                 freq = Number(data);
+                console.log("FREQUENCY: " + freq;
+                document.getElementById('update').innerHTML = freq;
             });
-        });
+        //});
         /*
         setInterval(function() {
             freq = document.getElementById('update').innerHTML;

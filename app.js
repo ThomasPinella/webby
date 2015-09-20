@@ -18,7 +18,9 @@ app.get('/', function(req, res) {
 });
 
 app.get('/frequency', function(req, res) {
-	res.sendStatus(notes.pop());
+	var n = notes.pop();
+	console.log("Server-side: " + n);
+	res.sendStatus(n);
 });
 
 var server = app.listen(app.get('port'), function() {
