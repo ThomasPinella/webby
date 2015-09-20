@@ -41,13 +41,13 @@ io.on('connection', function(socket) {
 	socket.on('end', function(f) {
 		io.emit('end', f);
 	});
-	/*
+	
 	socket.on('disconnect', function() {
 		var lost = client.freq;
 		clients.splice(clients.indexOf(client), 1);
 		notes.push(lost);
 		console.log('disconnected! ' + lost);
-	});*/
+	});
 });
 
 

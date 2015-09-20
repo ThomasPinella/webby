@@ -65,7 +65,7 @@
 
         $(function() {
             $.get('/frequency', function(data) {
-                freq = data;
+                freq = Number(data);
             });
         });
         /*
