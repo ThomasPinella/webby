@@ -2,6 +2,8 @@ var express = require('express');
 var ejs = require('ejs');
 var app = express();
 
+var clients = [];
+
 app.set('port', (process.env.PORT || 5000));
 app.set('views', './views');
 app.set('view engine', 'ejs');
@@ -20,14 +22,27 @@ var server = app.listen(app.get('port'), function() {
 
 var io = require('socket.io').listen(server);
 
-var count = 0;
+
 io.on('connection', function(socket) {
-	console.log('connected!');
-	count++;
+	clients.push(socket);
+	console.log('connected!' + clients.length);
     socket.on('play', function(f) {
         io.emit('play', f);
     });
 	socket.on('end', function(f) {
 		io.emit('end', f);
 	});
+	socket.on('disconnect', function() {
+		clients.splice(clients.indexOf(socket), 1);
+		console.log('disconnected!' + clients.length);
+	});
 });
+
+
+
+
+
+
+
+
+
